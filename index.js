@@ -127,6 +127,17 @@ async function run() {
     // ====================
     // Comment API - USING robinCollection
     // ====================
+    app.get("/api/comments", async (req, res) => {
+      try {
+        const comments = await commentsCollection
+          .find({ artifactId: req.params.artifactId })
+          .sort({ createdAt: -1 })
+          .toArray();
+        res.json(comments);
+      } catch (error) {
+        res.status(500).json({ error: "Failed to fetch comments" });
+      }
+    });
     app.get("/api/comments/:artifactId", async (req, res) => {
       try {
         const comments = await commentsCollection
